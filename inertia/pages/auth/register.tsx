@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { router } from '@inertiajs/react'
+import { Head, router } from '@inertiajs/react'
 
 export default function Register(props: { errors: any[] }) {
   const [form, setForm] = useState({
@@ -61,6 +61,7 @@ export default function Register(props: { errors: any[] }) {
 
   return (
     <div>
+      <Head title='Register' />
       <h1>Register</h1>
       <form onSubmit={handleSubmit}>
         <div>

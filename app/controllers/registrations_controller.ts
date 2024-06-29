@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { registrationValidator } from '#validators/registration'
+import User from '#models/user'
 
 export default class RegistrationsController {
 
@@ -22,10 +23,12 @@ export default class RegistrationsController {
    * TODO: Implement different invite registration
    * TODO: Implement different forms of registration (i.e. Google, Facebook, etc.)
    */
-  public async register({ inertia, request, response }: HttpContext) {
+  public async register({ inertia, request }: HttpContext) {
     try {      
       const payload = await request.validateUsing(registrationValidator)
-      console.log(payload)
+      const user = new User()
+      await user.fill(payload)
+      await user.save()
     } catch (error) {
       return inertia.render('auth/register', { errors: error.messages })
     }
