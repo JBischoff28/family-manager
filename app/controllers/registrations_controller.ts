@@ -28,9 +28,17 @@ export default class RegistrationsController {
       const payload = await request.validateUsing(registrationValidator)
       const user = new User()
       await user.fill(payload)
-      await user.save()
+      await user.save().then((user) => console.log(user))
     } catch (error) {
-      return inertia.render('auth/register', { errors: error.messages })
+      if (error.messages) {
+        return inertia.render('auth/register', { errors: error.messages })
+      } else {
+        if (error.message.includes("UNIQUE constraint failed: users.username")) {
+          return inertia.render('auth/register', { errors: [ { field: "username", rule: "unique", message: "This username is already in use, please try another one" } ], step: 1 })
+        } else {
+          return inertia.render('auth/register', { errors: [ { field: "email", rule: "unique", message: "This email is already in use, please try another one" } ], step: 1 })
+        }
+      }
     }
   }
 }
