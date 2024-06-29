@@ -12,6 +12,7 @@ const RegistrationsController = () => import('#controllers/registrations_control
 
 router.on('/').renderInertia('home', { version: 6 })
 
+// Registration routes
 router.group(() => {
   router.get('/register', [RegistrationsController, 'show']).as('register.show')
   router.post('/register', [RegistrationsController, 'register']).as('register.submit')
