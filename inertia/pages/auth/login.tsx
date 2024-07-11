@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { router } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 
 export default function Login(props: { errors: any }) {
   const [form, setForm] = useState({
@@ -30,7 +30,7 @@ export default function Login(props: { errors: any }) {
   const handleSubmit = (e: any) => {
     e.preventDefault()
     if (form.password && (form.username || form.email)) {
-      router.post('/register', form)
+      router.post('/login', form)
     }
     const newMissingFields = {
       password: '',
@@ -44,14 +44,18 @@ export default function Login(props: { errors: any }) {
       newMissingFields.username = "Please enter your username"
     }
     if (form.password.trim() == '') {
-      newMissingFields.password = "Please enter a new password"
+      newMissingFields.password = "Please enter your password"
     }
     setMissingFields(newMissingFields)
   }
 
   const handleLoginMethod = (e: any) => {
-    const value = e.target.value
-    setLoginMethod(value)
+    e.preventDefault()
+    if (loginMethod == 'username') {
+      setLoginMethod('email')
+    } else {
+      setLoginMethod('username')
+    }
   }
 
   useEffect(() => {
@@ -61,8 +65,40 @@ export default function Login(props: { errors: any }) {
   }, [props.errors])
 
   return (
-    <div>
-
+<div>
+      <Head title='Login' />
+      <h1>Login</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          {loginMethod === 'email' &&
+          <div>
+            <label htmlFor="email">Email</label>
+            <input type="email" id="email" value={form.email} onChange={handleChange} />
+            {missingFields.email != '' && <span>{missingFields.email}</span>}
+            {errors[0] && errors[0].field == 'email' ? <span>{errors[0].message}</span> : ""}
+          </div>}
+          {loginMethod === 'username' &&
+          <div>
+            <label htmlFor="username">Username</label>
+            <input type="username" id="username" value={form.username} onChange={handleChange} />
+            {missingFields.username != '' && <span>{missingFields.username}</span>}
+            {errors[0] && errors[0].field == 'username' ? <span>{errors[0].message}</span> : ""}
+          </div>}
+        </div>
+        <div>
+          <div>
+            <label htmlFor="password">Password</label>
+            <input type="password" id="password" value={form.password} onChange={handleChange} />
+            {missingFields.password != '' && <span>{missingFields.password}</span>}
+            {errors[0] && errors[0].field == 'password' && errors[0].rule != 'confirm' ? <span>{errors[0].message}</span>: ""}
+          </div>
+        </div>
+        <div>
+            <button onClick={(e) => handleLoginMethod(e)}>Login with {loginMethod == 'username' ? "email" : "username"}</button>
+            <button type="submit">Login</button>
+            <Link href="/register">Don't have an account? Register Here!</Link>
+          </div>
+      </form>
     </div>
   )
 }

@@ -28,7 +28,8 @@ export default class RegistrationsController {
       const payload = await request.validateUsing(registrationValidator)
       const user = new User()
       await user.fill(payload)
-      await user.save().then((user) => console.log(user))
+      await user.save()
+      return inertia.render('auth/login')
     } catch (error) {
       if (error.messages) {
         return inertia.render('auth/register', { errors: error.messages })

@@ -18,4 +18,5 @@ router.group(() => {
   router.get('/register', [RegistrationsController, 'show']).as('register.show')
   router.post('/register', [RegistrationsController, 'register']).as('register.submit')
   router.get('/login', [SessionsController, 'show']).as('login.show')
+  router.post('/login', [SessionsController, 'login']).as('login.login')
 })

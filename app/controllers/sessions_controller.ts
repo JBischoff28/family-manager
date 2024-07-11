@@ -26,13 +26,13 @@ export default class SessionsController {
       const { username, password } = payload
       const user = await User.verifyCredentials(username, password)
       await auth.use('web').login(user)
-      console.log("Logged In")
+      console.log("Logged In with username")
     } else if (data.email) {
       const payload = await request.validateUsing(loginWithEmailValidator)
       const { email, password } = payload
       const user = await User.verifyCredentials(email, password)
       await auth.use('web').login(user)
-      console.log("Logged In")
+      console.log("Logged In with email")
     } else {
       console.log("Something went wrong, please try again.")
     }
