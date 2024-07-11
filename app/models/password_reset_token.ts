@@ -13,7 +13,7 @@ export default class PasswordResetToken extends BaseModel {
   @column()
   declare userId: number
 
-  @column()
+  @column.dateTime()
   declare expiresAt: DateTime
 
   @column.dateTime({ autoCreate: true })

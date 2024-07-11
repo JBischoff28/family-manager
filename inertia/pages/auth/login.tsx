@@ -97,6 +97,7 @@ export default function Login(props: { errors: any }) {
             <button onClick={(e) => handleLoginMethod(e)}>Login with {loginMethod == 'username' ? "email" : "username"}</button>
             <button type="submit">Login</button>
             <Link href="/register">Don't have an account? Register Here!</Link>
+            <Link href="/forgot-password">Forgot Password</Link>
           </div>
       </form>
     </div>
