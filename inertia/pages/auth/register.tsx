@@ -4,7 +4,8 @@ import { Head, router } from '@inertiajs/react'
 export default function Register(props: { errors: any[], step: number }) {
 
   const [form, setForm] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     username: '',
     password: '',
@@ -12,7 +13,8 @@ export default function Register(props: { errors: any[], step: number }) {
   })
   
   const [missingFields, setMissingFields] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     username: '',
     password: '',
@@ -36,19 +38,23 @@ export default function Register(props: { errors: any[], step: number }) {
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
-    if (form.name && form.email && form.username && form.password && form.passwordConfirmation) {
+    if (form.firstName && form.lastName && form.email && form.username && form.password && form.passwordConfirmation) {
       setSubmitting(true)
       router.post('/register', form)
     }
     const newMissingFields = {
-      name: '',
+      firstName: '',
+      lastName: '',
       email: '',
       username: '',
       password: '',
       passwordConfirmation: ''
     }
-    if (form.name.trim() == '') {
-      newMissingFields.name = "Please enter your full name"
+    if (form.firstName.trim() == '') {
+      newMissingFields.firstName = "Please enter your first name"
+    }
+    if (form.lastName.trim() == '') {
+      newMissingFields.lastName = "Please enter your last name"
     }
     if (form.email.trim() == '') {
       newMissingFields.email = "Please enter your email address"
@@ -67,18 +73,22 @@ export default function Register(props: { errors: any[], step: number }) {
 
   const handleNextStep = (e: any) => {
     e.preventDefault()
-    if (form.name && form.email && form.username) {
+    if (form.firstName && form.lastName && form.email && form.username) {
       setStep(2)
     }
     const newMissingFields = {
-      name: '',
+      firstName: '',
+      lastName: '',
       email: '',
       username: '',
       password: '',
       passwordConfirmation: ''
     }
-    if (form.name.trim() == '') {
-      newMissingFields.name = "Please enter your full name"
+    if (form.firstName.trim() == '') {
+      newMissingFields.firstName = "Please enter your first name"
+    }
+    if (form.lastName.trim() == '') {
+      newMissingFields.lastName = "Please enter your last name"
     }
     if (form.email.trim() == '') {
       newMissingFields.email = "Please enter your email address"
@@ -111,10 +121,16 @@ export default function Register(props: { errors: any[], step: number }) {
         {step == 1 &&
         <div>
           <div>
-            <label htmlFor="name">Name</label>
-            <input type="text" id="name" value={form.name} onChange={handleChange} />
-            {missingFields.name != '' && <span>{missingFields.name}</span>}
-            {errors[0] && errors[0].field == 'name' ? <span>{errors[0].message}</span> : ""}
+            <label htmlFor="firstName">First Name</label>
+            <input type="text" id="firstName" value={form.firstName} onChange={handleChange} />
+            {missingFields.firstName != '' && <span>{missingFields.firstName}</span>}
+            {errors[0] && errors[0].field == 'firstName' ? <span>{errors[0].message}</span> : ""}
+          </div>
+          <div>
+            <label htmlFor="lastName">Last Name</label>
+            <input type="text" id="lastName" value={form.lastName} onChange={handleChange} />
+            {missingFields.lastName != '' && <span>{missingFields.lastName}</span>}
+            {errors[0] && errors[0].field == 'lastName' ? <span>{errors[0].message}</span> : ""}
           </div>
           <div>
             <label htmlFor="email">Email</label>

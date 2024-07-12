@@ -23,13 +23,14 @@ export default class RegistrationsController {
    * TODO: Implement different invite registration
    * TODO: Implement different forms of registration (i.e. Google, Facebook, etc.)
    */
-  public async register({ inertia, request }: HttpContext) {
+  public async register({ inertia, request, auth }: HttpContext) {
     try {      
       const payload = await request.validateUsing(registrationValidator)
       const user = new User()
       await user.fill(payload)
       await user.save()
-      return inertia.render('auth/login')
+      await auth.use('web').login(user)
+      console.log("logged in as", user)
     } catch (error) {
       if (error.messages) {
         return inertia.render('auth/register', { errors: error.messages })

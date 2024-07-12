@@ -1,12 +1,13 @@
 import { DateTime } from 'luxon'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
-import { BaseModel, column, hasOne } from '@adonisjs/lucid/orm'
+import { BaseModel, belongsTo, column, hasOne } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
-import type { HasOne } from '@adonisjs/lucid/types/relations'
+import type { BelongsTo, HasOne } from '@adonisjs/lucid/types/relations'
 
 // Model Imports
 import PasswordResetToken from '#models/password_reset_token'
+import Role from '#models/role'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email', 'username'],
@@ -32,6 +33,9 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare rememberMeToken?: string
 
+  @column()
+  declare isVerified: boolean
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
@@ -40,4 +44,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   @hasOne(() => PasswordResetToken)
   declare passwordResetToken: HasOne<typeof PasswordResetToken>
+
+  @belongsTo(() => Role)
+  declare role: BelongsTo<typeof Role>
 }

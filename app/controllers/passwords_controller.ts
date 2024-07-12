@@ -12,10 +12,20 @@ import PasswordResetToken from '#models/password_reset_token'
 
 export default class PasswordsController {
 
+  /**
+   * 
+   * Renders the Forgot Password page
+   */
   async showForgotPassword({ inertia }: HttpContext) {
     return inertia.render('auth/forgot-password')
   }
 
+  /**
+   * 
+   * Finds a user by their email address.
+   * Creates a PasswordResetToken and attaches the found user to the token.
+   * Sends an email to the user with a link to reset their password. 
+   */
   async sendResetToken({ request, inertia }: HttpContext) {
     try {
       const payload = await request.validateUsing(sendTokenValidator)
@@ -61,6 +71,10 @@ export default class PasswordsController {
     }
   }
 
+  /**
+   * 
+   * Renders the Reset Password page if a reset token is present. 
+   */
   async showResetPassword({ request, inertia }: HttpContext) {
     const token = request.qs().token
     if (!token) {
@@ -69,6 +83,12 @@ export default class PasswordsController {
     return inertia.render('auth/reset-password', { token })
   }
 
+  /**
+   * 
+   * Validates the PasswordResetToken.
+   * Finds the user who's password is being updated by the user attacted to the reset token.
+   * Resets the user's passwords and returns the user to the login page. 
+   */
   async resetPassword({ request, inertia }: HttpContext) {
     try {      
       const payload = await request.validateUsing(passwordResetValidator)
