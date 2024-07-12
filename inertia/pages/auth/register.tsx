@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Head, router } from '@inertiajs/react'
 
 export default function Register(props: { errors: any[], step: number }) {
+
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -22,6 +23,8 @@ export default function Register(props: { errors: any[], step: number }) {
 
   const [errors, setErrors] = useState<any[]>([])
 
+  const [submitting, setSubmitting] = useState(false)
+
   const handleChange = (e: any) => {
     const key = e.target.id;
     const value = e.target.value
@@ -34,6 +37,7 @@ export default function Register(props: { errors: any[], step: number }) {
   const handleSubmit = (e: any) => {
     e.preventDefault()
     if (form.name && form.email && form.username && form.password && form.passwordConfirmation) {
+      setSubmitting(true)
       router.post('/register', form)
     }
     const newMissingFields = {
@@ -144,7 +148,7 @@ export default function Register(props: { errors: any[], step: number }) {
           </div>
           <div>
             <button onClick={(e) => handlePrevStep(e)}>Back</button>
-            <button type="submit">Register</button>
+            <button disabled={submitting} type="submit">Register</button>
           </div>
         </div>}
       </form>

@@ -12,6 +12,8 @@ export default function Login(props: { errors: any }) {
 
     const [errors, setErrors] = useState<any[]>([])
 
+    const [submitting, setSubmitting] = useState(false)
+
     const handleChange = (e: any) => {
         const key = e.target.id;
         const value = e.target.value
@@ -24,6 +26,7 @@ export default function Login(props: { errors: any }) {
     const handleSubmit = (e: any) => {
         e.preventDefault()
         if (form.email) {
+            setSubmitting(true)
             router.post('/forgot-password', form)
         }
         const newMissingFields = {
@@ -55,7 +58,7 @@ export default function Login(props: { errors: any }) {
                         {errors[0] && errors[0].field != 'email' ? <span>{errors[0].message}</span> : ""}
                     </div>
                 </div>
-                <button type="submit">Send Reset Token</button>
+                <button disabled={submitting} type="submit">Send Reset Token</button>
             </form>
         </div>
     )

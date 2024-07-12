@@ -4,20 +4,21 @@ import { randomBytes } from 'crypto'
 import mail from '@adonisjs/mail/services/main'
 
 // Validator Imports
-import { passwordResetValidator } from '#validators/password'
+import { passwordResetValidator, sendTokenValidator } from '#validators/password'
 
 // Model Imports
 import User from '#models/user'
 import PasswordResetToken from '#models/password_reset_token'
 
 export default class PasswordsController {
-  async show({ inertia }: HttpContext) {
+
+  async showForgotPassword({ inertia }: HttpContext) {
     return inertia.render('auth/forgot-password')
   }
 
-  async forgotPassword({ request, inertia }: HttpContext) {
+  async sendResetToken({ request, inertia }: HttpContext) {
     try {
-      const payload = await request.validateUsing(passwordResetValidator)
+      const payload = await request.validateUsing(sendTokenValidator)
       const user = await User.findBy('email', payload.email)
 
       if (!user) {
@@ -52,12 +53,41 @@ export default class PasswordsController {
               .subject('Reset Your Password - Family Manager')
               .htmlView('emails/reset-password', { user, resetToken })
           }).then(() => console.log('Email Sent'))
+          return inertia.render('auth/token-sent')
         }
       }
     } catch (error) {
-      console.log(error)
       return inertia.render('auth/forgot-password', { errors: error.messages })
     }
   }
 
+  async showResetPassword({ request, inertia }: HttpContext) {
+    const token = request.qs().token
+    if (!token) {
+      return inertia.render('errors/token_not_found')
+    }
+    return inertia.render('auth/reset-password', { token })
+  }
+
+  async resetPassword({ request, inertia }: HttpContext) {
+    try {      
+      const payload = await request.validateUsing(passwordResetValidator)
+      const passwordResetToken = await PasswordResetToken.findBy('token', payload.token)
+
+      if (!passwordResetToken) {
+        return inertia.render('errors/token_not_found')
+      }
+
+      if (passwordResetToken.expiresAt < DateTime.now()) {
+        return inertia.render('errors/expired_token')
+      }
+
+      const user = await User.find(passwordResetToken.userId)
+      console.log(user)
+
+    } catch (error) {
+      const token = request.qs().token
+      return inertia.render('auth/reset-password', { errors: error.messages, token })
+    }
+  }
 }

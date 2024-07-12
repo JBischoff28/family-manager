@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Head, Link, router } from "@inertiajs/react";
 
 export default function Login(props: { errors: any }) {
+  
   const [form, setForm] = useState({
     username: '',
     email: '',
@@ -18,6 +19,8 @@ export default function Login(props: { errors: any }) {
 
   const [errors, setErrors] = useState<any[]>([])
 
+  const [submitting, setSubmitting] = useState(false)
+
   const handleChange = (e: any) => {
     const key = e.target.id;
     const value = e.target.value
@@ -30,6 +33,7 @@ export default function Login(props: { errors: any }) {
   const handleSubmit = (e: any) => {
     e.preventDefault()
     if (form.password && (form.username || form.email)) {
+      setSubmitting(true)
       router.post('/login', form)
     }
     const newMissingFields = {
@@ -95,7 +99,7 @@ export default function Login(props: { errors: any }) {
         </div>
         <div>
             <button onClick={(e) => handleLoginMethod(e)}>Login with {loginMethod == 'username' ? "email" : "username"}</button>
-            <button type="submit">Login</button>
+            <button disabled={submitting} type="submit">Login</button>
             <Link href="/register">Don't have an account? Register Here!</Link>
             <Link href="/forgot-password">Forgot Password</Link>
           </div>
