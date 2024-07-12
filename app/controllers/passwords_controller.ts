@@ -83,7 +83,12 @@ export default class PasswordsController {
       }
 
       const user = await User.find(passwordResetToken.userId)
-      console.log(user)
+      if (user) {
+        user.password = payload.password
+        await user.save()
+        await passwordResetToken.delete()
+        return inertia.render('auth/login')
+      }
 
     } catch (error) {
       const token = request.qs().token
