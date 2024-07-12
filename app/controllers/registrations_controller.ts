@@ -26,7 +26,7 @@ export default class RegistrationsController {
    * TODO: Implement different invite registration
    * TODO: Implement different forms of registration (i.e. Google, Facebook, etc.)
    */
-  public async register({ inertia, request, auth }: HttpContext) {
+  public async register({ inertia, request }: HttpContext) {
     try {
       const payload = await request.validateUsing(registrationValidator)
       
