@@ -1,5 +1,8 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { registrationValidator } from '#validators/registration'
+import mail from '@adonisjs/mail/services/main'
+
+// Model Imports
 import User from '#models/user'
 
 export default class RegistrationsController {
@@ -8,7 +11,7 @@ export default class RegistrationsController {
    * Shows the registration page on the /register route
    */
   public async show({ inertia }: HttpContext) {
-    return inertia.render('auth/register') 
+    return inertia.render('auth/register')
   }
 
   /**
@@ -24,23 +27,48 @@ export default class RegistrationsController {
    * TODO: Implement different forms of registration (i.e. Google, Facebook, etc.)
    */
   public async register({ inertia, request, auth }: HttpContext) {
-    try {      
+    try {
       const payload = await request.validateUsing(registrationValidator)
+      
       const user = new User()
       await user.fill(payload)
       await user.save()
-      await auth.use('web').login(user)
-      console.log("logged in as", user)
+      
+      console.log("Sending Email")
+      await mail.send((message) => {
+        message
+          .to(user.email)
+          .from('jbischoffdev@gmail.com')
+          .subject('Verify Your Email Address - Family Manager')
+          .htmlView('emails/verify-email', { user })
+      }).then(() => console.log('Email Sent'))
+
+      return inertia.render('confirmations/verify-email')
     } catch (error) {
       if (error.messages) {
         return inertia.render('auth/register', { errors: error.messages })
       } else {
         if (error.message.includes("UNIQUE constraint failed: users.username")) {
-          return inertia.render('auth/register', { errors: [ { field: "username", rule: "unique", message: "This username is already in use, please try another one" } ], step: 1 })
+          return inertia.render('auth/register', { errors: [{ field: "username", rule: "unique", message: "This username is already in use, please try another one" }], step: 1 })
         } else {
-          return inertia.render('auth/register', { errors: [ { field: "email", rule: "unique", message: "This email is already in use, please try another one" } ], step: 1 })
+          console.log(error)
+          return inertia.render('auth/register', { errors: [{ field: "email", rule: "unique", message: "This email is already in use, please try another one" }], step: 1 })
         }
       }
+    }
+  }
+
+  async verifyEmail({ request, auth, inertia }: HttpContext) {
+    const email = request.qs().email
+    const user = await User.findBy('email', email)
+
+    if (user) {
+      user.isVerified = true
+      await user.save()
+      await auth.use('web').login(user)
+      return inertia.render('confirmations/email-verified')
+    } else {
+      return inertia.render('errors/not_found')
     }
   }
 }

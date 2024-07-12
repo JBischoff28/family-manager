@@ -1,4 +1,4 @@
-import { router } from "@inertiajs/react"
+import { Head, router } from "@inertiajs/react"
 import { useEffect, useState } from "react"
 
 export default function ResetPassword(props: { token: string, errors: any }) {
@@ -54,6 +54,7 @@ export default function ResetPassword(props: { token: string, errors: any }) {
 
     return (
         <div>
+            <Head title="Password Reset" />
             <p>Reset Your Password</p>
             <form>
                 <input type='hidden' value={form.token} name='token' />

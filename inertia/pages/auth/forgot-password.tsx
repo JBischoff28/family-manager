@@ -46,7 +46,7 @@ export default function Login(props: { errors: any }) {
 
     return (
         <div>
-            <Head title='Reset Password' />
+            <Head title='Forgot Password' />
             <h1>Password Reset</h1>
             <form onSubmit={handleSubmit}>
                 <div>

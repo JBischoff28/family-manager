@@ -1,10 +1,14 @@
+import { Head } from "@inertiajs/react";
+
 export default function NotFound() {
   return (
     <>
+      <Head title="Not Found" />
       <div className="container">
-        <div className="title">Page not found</div>
+        <div className="title">Resource not found</div>
 
-        <span>This page does not exist.</span>
+        <span>This Resource does not exist.</span>
+        <span>Please try to make your request again. If this error persists, please reach out to our support team.</span>
       </div>
     </>
   )

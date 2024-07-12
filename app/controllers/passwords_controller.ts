@@ -63,7 +63,7 @@ export default class PasswordsController {
               .subject('Reset Your Password - Family Manager')
               .htmlView('emails/reset-password', { user, resetToken })
           }).then(() => console.log('Email Sent'))
-          return inertia.render('auth/token-sent')
+          return inertia.render('confirmations/token-sent')
         }
       }
     } catch (error) {

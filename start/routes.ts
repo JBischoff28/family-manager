@@ -25,3 +25,8 @@ router.group(() => {
   router.get('/reset-password', [PasswordController, 'showResetPassword']).as('resetPassword.show')
   router.post('/reset-password', [PasswordController, 'resetPassword']).as('resetPassword.reset')
 })
+
+// Verification Routes
+router.group(() => {
+  router.get('/verify-email', [RegistrationsController, 'verifyEmail']).as('verifyEmail')
+})
