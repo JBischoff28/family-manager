@@ -4,6 +4,7 @@ import mail from '@adonisjs/mail/services/main'
 
 // Model Imports
 import User from '#models/user'
+import { verifyUserAge } from '../utils/age.js'
 
 export default class RegistrationsController {
 
@@ -28,6 +29,11 @@ export default class RegistrationsController {
   public async register({ inertia, request }: HttpContext) {
     try {
       const payload = await request.validateUsing(registrationValidator)
+
+      const isAdult = verifyUserAge(payload.dateOfBirth)
+      if (!isAdult) {
+        return inertia.render('errors/not_allowed/age_restriction')
+      }
       
       const user = new User()
       await user.fill(payload)
