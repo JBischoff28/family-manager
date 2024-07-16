@@ -22,7 +22,6 @@ export default class RegistrationsController {
    * 
    * Returns any errors caught by the registration validator if they exist
    * 
-   * TODO: Add email verification functionality
    * TODO: Implement different invite registration
    * TODO: Implement different forms of registration (i.e. Google, Facebook, etc.)
    */

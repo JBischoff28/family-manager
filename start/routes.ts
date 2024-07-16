@@ -30,3 +30,7 @@ router.group(() => {
 router.group(() => {
   router.get('/verify-email', [RegistrationsController, 'verifyEmail']).as('verifyEmail')
 })
+
+// Account Creation Routes
+router.group(() => {
+})
