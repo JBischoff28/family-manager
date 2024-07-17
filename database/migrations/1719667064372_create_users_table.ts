@@ -14,7 +14,7 @@ export default class extends BaseSchema {
       table.string('password').notNullable()
       table.string('remember_me_token').nullable()
       table.boolean('is_verified').defaultTo(false).notNullable()
-
+      table.integer('role_id').unsigned().references('id').inTable('roles').onDelete('CASCADE')
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
     })

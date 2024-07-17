@@ -1,13 +1,14 @@
 import { DateTime } from 'luxon'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
-import { BaseModel, belongsTo, column, hasOne } from '@adonisjs/lucid/orm'
+import { BaseModel, belongsTo, column, hasMany, hasOne } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
-import type { BelongsTo, HasOne } from '@adonisjs/lucid/types/relations'
+import type { BelongsTo, HasMany, HasOne } from '@adonisjs/lucid/types/relations'
 
 // Model Imports
 import PasswordResetToken from '#models/password_reset_token'
 import Role from '#models/role'
+import ContactMethod from '#models/contact_method'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email', 'username'],
@@ -42,6 +43,9 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare isVerified: boolean
 
+  @column()
+  declare roleId?: number
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
@@ -53,4 +57,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   @belongsTo(() => Role)
   declare role: BelongsTo<typeof Role>
+
+  @hasMany(() => ContactMethod)
+  declare contactMethods: HasMany<typeof ContactMethod>
 }

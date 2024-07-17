@@ -10,6 +10,7 @@ export default class extends BaseSchema {
       table.string('method_value', 255).notNullable()
       table.boolean('is_primary').defaultTo(false).notNullable()
       table.text('notes').nullable()
+      table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
       table.timestamp('created_at')
       table.timestamp('updated_at')
     })
