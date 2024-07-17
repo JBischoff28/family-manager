@@ -14,7 +14,7 @@ export default class WorkSchedule extends BaseModel {
   declare occupationId: number
 
   @column()
-  declare hoursPerWeek: number
+  declare hoursPerWeek?: number
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

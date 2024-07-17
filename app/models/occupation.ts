@@ -23,7 +23,7 @@ export default class Occupation extends BaseModel {
   declare jobCompany: string
 
   @column()
-  declare primaryAddress: string
+  declare primaryAddress?: string
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

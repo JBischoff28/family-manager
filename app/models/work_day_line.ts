@@ -22,7 +22,7 @@ export default class WorkDayLine extends BaseModel {
   declare endTime: DateTime
 
   @column()
-  declare notes: string
+  declare notes?: string
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
