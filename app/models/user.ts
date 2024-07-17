@@ -9,6 +9,7 @@ import type { BelongsTo, HasMany, HasOne } from '@adonisjs/lucid/types/relations
 import PasswordResetToken from '#models/password_reset_token'
 import Role from '#models/role'
 import ContactMethod from '#models/contact_method'
+import Occupation from '#models/occupation'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email', 'username'],
@@ -60,4 +61,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   @hasMany(() => ContactMethod)
   declare contactMethods: HasMany<typeof ContactMethod>
+
+  @hasMany(() => Occupation)
+  declare occupations: HasMany<typeof Occupation>
 }
