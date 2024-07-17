@@ -17,7 +17,8 @@ Account Management: Handle financial aspects and manage the household budget.
 
 ### Planned
 Household Management: Create and manage household details.\
-Dashboard: Overview of household activities and financial status.
+Dashboard: Overview of household activities and financial status.\
+...And More!
 
 ## Technology Stack
 Backend: AdonisJS\
