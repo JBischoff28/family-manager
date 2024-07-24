@@ -1,5 +1,10 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+
+// Model Imports
+import User from '#models/user'
+import Household from '#models/household'
 
 export default class Account extends BaseModel {
   @column({ isPrimary: true })
@@ -7,6 +12,9 @@ export default class Account extends BaseModel {
 
   @column()
   declare primaryAccountHolderId: number
+
+  @column()
+  declare householdId: number
 
   @column()
   declare isDelinquent: boolean
@@ -17,14 +25,15 @@ export default class Account extends BaseModel {
   @column()
   declare stripeSubscriptionId: string
 
-  @column()
-  declare planType: string
-
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
 
+  @belongsTo(() => User)
+  declare primaryAccountHolder: BelongsTo<typeof User>
 
+  @belongsTo(() => Household)
+  declare household: BelongsTo<typeof Household>
 }

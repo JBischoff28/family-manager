@@ -10,6 +10,7 @@ import PasswordResetToken from '#models/password_reset_token'
 import Role from '#models/role'
 import ContactMethod from '#models/contact_method'
 import Occupation from '#models/occupation'
+import Household from '#models/household'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email', 'username'],
@@ -47,6 +48,9 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare roleId?: number
 
+  @column()
+  declare householdId?: number
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
@@ -55,6 +59,9 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   @hasOne(() => PasswordResetToken)
   declare passwordResetToken: HasOne<typeof PasswordResetToken>
+
+  @belongsTo(() => Household)
+  declare household: BelongsTo<typeof Household>
 
   @belongsTo(() => Role)
   declare role: BelongsTo<typeof Role>
