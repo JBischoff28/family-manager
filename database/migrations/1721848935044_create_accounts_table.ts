@@ -10,7 +10,7 @@ export default class extends BaseSchema {
       table.integer('household_id').unsigned().references('id').inTable('households').onDelete('CASCADE').nullable()
       table.boolean('is_delinquent').defaultTo(false).notNullable()
       table.string('stripe_customer_id').notNullable()
-      table.string('stripe_subscription_id').notNullable()
+      table.string('stripe_subscription_id').nullable()
       table.timestamp('created_at')
       table.timestamp('updated_at')
     })

@@ -14,7 +14,7 @@ export default class Account extends BaseModel {
   declare primaryAccountHolderId: number
 
   @column()
-  declare householdId: number
+  declare householdId?: number
 
   @column()
   declare isDelinquent: boolean
@@ -23,7 +23,7 @@ export default class Account extends BaseModel {
   declare stripeCustomerId: string
 
   @column()
-  declare stripeSubscriptionId: string
+  declare stripeSubscriptionId?: string
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
