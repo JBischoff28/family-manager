@@ -2,7 +2,7 @@
 import User from "#models/user";
 
 // Service Imports
-import AgeService from '#services/age-service'
+import AgeService from '#services/age_service'
 
 class UserService {
 

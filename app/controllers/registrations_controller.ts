@@ -6,7 +6,7 @@ import mail from '@adonisjs/mail/services/main'
 import User from '#models/user'
 
 // Service Imports
-import AgeService from '#services/age-service'
+import AgeService from '#services/age_service'
 
 export default class RegistrationsController {
 
