@@ -19,20 +19,29 @@ export default class SessionsController {
    * 
    * TODO: Redirect the logged in user to a dashboard home page
    */
-  public async login({ request, auth }: HttpContext) {
+  public async login({ request, auth, inertia }: HttpContext) {
     const data = request.all()
+    console.log(data)
     if (data.username) {
       const payload = await request.validateUsing(loginWithUsernameValidator)
       const { username, password } = payload
-      const user = await User.verifyCredentials(username, password)
-      await auth.use('web').login(user)
-      console.log("Logged In with username")
+      try {
+        const user = await User.verifyCredentials(username, password)
+        await auth.use('web').login(user)
+        console.log("Logged In with username")
+      } catch (error) {
+        return inertia.render('auth/login', { errors: [{ field: "credentials", rule: "incorrect", message: "Your username or password is incorrect. Please try again" }] })
+      }
     } else if (data.email) {
       const payload = await request.validateUsing(loginWithEmailValidator)
       const { email, password } = payload
-      const user = await User.verifyCredentials(email, password)
-      await auth.use('web').login(user)
-      console.log("Logged In with email")
+      try {
+        const user = await User.verifyCredentials(email, password)
+        await auth.use('web').login(user)
+        console.log("Logged In with email")
+      } catch (error) {
+        return inertia.render('auth/login', { errors: [{ field: "credentials", rule: "incorrect", message: "Your email or password is incorrect. Please try again" }] })
+      }
     } else {
       console.log("Something went wrong, please try again.")
     }

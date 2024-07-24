@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Head, Link, router } from "@inertiajs/react";
 
-export default function Login(props: { errors: any }) {
+export default function Login(props: { errors: any[] }) {
   
   const [form, setForm] = useState({
     username: '',
@@ -56,8 +56,18 @@ export default function Login(props: { errors: any }) {
   const handleLoginMethod = (e: any) => {
     e.preventDefault()
     if (loginMethod == 'username') {
+      setForm({
+        username: '',
+        email: '',
+        password: ''
+      })
       setLoginMethod('email')
     } else {
+      setForm({
+        username: '',
+        email: '',
+        password: ''
+      })
       setLoginMethod('username')
     }
   }
@@ -65,6 +75,7 @@ export default function Login(props: { errors: any }) {
   useEffect(() => {
     if (props.errors) {
       setErrors(props.errors)
+      setSubmitting(false)
     }
   }, [props.errors])
 
@@ -96,6 +107,9 @@ export default function Login(props: { errors: any }) {
             {missingFields.password != '' && <span>{missingFields.password}</span>}
             {errors[0] && errors[0].field == 'password' && errors[0].rule != 'confirm' ? <span>{errors[0].message}</span>: ""}
           </div>
+        </div>
+        <div>
+          {errors[0] && errors[0].field == 'credentials' && errors[0].rule == 'incorrect' ? <span>{errors[0].message}</span>: ""}
         </div>
         <div>
             <button onClick={(e) => handleLoginMethod(e)}>Login with {loginMethod == 'username' ? "email" : "username"}</button>
