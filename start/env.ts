@@ -34,4 +34,12 @@ export default await Env.create(new URL('../', import.meta.url), {
   SMTP_PORT: Env.schema.string(),
   SMTP_PASSWORD: Env.schema.string(),
   SMTP_USERNAME: Env.schema.string(),
+
+  /*
+  |----------------------------------------------------------
+  | Variables for Stripe
+  |----------------------------------------------------------
+  */
+ STRIPE_SECRET_KEY: Env.schema.string(),
+ STRIPE_PUBLIC_KEY: Env.schema.string()
 })
