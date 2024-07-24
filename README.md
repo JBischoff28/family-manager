@@ -6,6 +6,9 @@ This code belongs to the repository owner. Upon the transition of this project t
 ## Overview
 This Family Management Web Application is designed to help families manage their household, including user profiles, household information, and financial aspects. It is built using AdonisJS, Inertia.js, and React.
 
+### Future Refactoring
+Since this application is still in it's very early stages, the code here may be a bit more messy than it will be in the future. This is simply to get the ideas an concepts scaffolded. In future releases, this app will adopt more services based functionality and best practices.
+
 ## Features
 
 ### Currently Implemented
