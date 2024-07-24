@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Head, router } from '@inertiajs/react'
+import { DateTime } from 'luxon'
+import AgeService from '#services/age-service'
 
 export default function Register(props: { errors: any[], step: number }) {
 
@@ -78,12 +80,8 @@ export default function Register(props: { errors: any[], step: number }) {
   }
 
   const handleNextStep = (e: any) => {
-    e.preventDefault()
-    if (form.firstName && form.lastName && form.dateOfBirth && step == 1) {
-      setStep(2)
-    } else if (form.email && form.username && step == 2) {
-      setStep(3)
-    }
+    e.preventDefault();
+
     const newMissingFields = {
       firstName: '',
       lastName: '',
@@ -92,24 +90,44 @@ export default function Register(props: { errors: any[], step: number }) {
       username: '',
       password: '',
       passwordConfirmation: ''
+    };
+
+    if (step === 1) {
+      if (form.firstName.trim() === '') {
+        newMissingFields.firstName = "Please enter your first name";
+      }
+      if (form.lastName.trim() === '') {
+        newMissingFields.lastName = "Please enter your last name";
+      }
+      if (form.dateOfBirth.trim() === '') {
+        newMissingFields.dateOfBirth = "Please enter your date of birth";
+      } else {
+        const dob = DateTime.fromISO(form.dateOfBirth);
+        if (!AgeService.isAdult(dob)) {
+          newMissingFields.dateOfBirth = "You must be at least 18 years old in order to create a household. If you are trying to join a household, please try this link instead [link for minors will go here]";
+        }
+      }
+
+      if (newMissingFields.firstName === '' && newMissingFields.lastName === '' && newMissingFields.dateOfBirth === '') {
+        setStep(2);
+      } else {
+        setMissingFields(newMissingFields);
+      }
+    } else if (step === 2) {
+      if (form.email.trim() === '') {
+        newMissingFields.email = "Please enter your email address";
+      }
+      if (form.username.trim() === '') {
+        newMissingFields.username = "Please enter a username";
+      }
+
+      if (newMissingFields.email === '' && newMissingFields.username === '') {
+        setStep(3);
+      } else {
+        setMissingFields(newMissingFields);
+      }
     }
-    if (form.firstName.trim() == '' && step == 1) {
-      newMissingFields.firstName = "Please enter your first name"
-    }
-    if (form.lastName.trim() == '' && step == 1) {
-      newMissingFields.lastName = "Please enter your last name"
-    }
-    if (form.email.trim() == '' && step == 2) {
-      newMissingFields.email = "Please enter your email address"
-    }
-    if (form.username.trim() == '' && step == 2) {
-      newMissingFields.username = "Please enter a username"
-    }
-    if (form.dateOfBirth.trim() == '' && step == 1) {
-      newMissingFields.dateOfBirth = "Please enter your date of birth"
-    }
-    setMissingFields(newMissingFields)
-  }
+  };
 
   const handlePrevStep = (e: any) => {
     e.preventDefault()
