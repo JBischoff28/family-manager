@@ -12,7 +12,7 @@ const RegistrationsController = () => import('#controllers/registrations_control
 const SessionsController = () => import('#controllers/sessions_controller')
 const PasswordController = () => import('#controllers/passwords_controller')
 
-router.on('/').renderInertia('home', { version: 6 })
+router.on('/').redirect('/login')
 
 // Authentication routes
 router.group(() => {

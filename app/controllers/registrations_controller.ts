@@ -68,10 +68,15 @@ export default class RegistrationsController {
     const user = await User.findBy('email', email)
 
     if (user) {
-      user.isVerified = true
-      await user.save()
-      await auth.use('web').login(user)
-      return inertia.render('confirmations/email-verified')
+      if (user.isVerified == false) {        
+        user.isVerified = true
+        await user.save()
+        await auth.use('web').login(user)
+        return inertia.render('confirmations/email-verified')
+      } else {
+        console.log('Already Verified')
+        return inertia.render('confirmations/email-verified')
+      }
     } else {
       return inertia.render('errors/not_found')
     }
