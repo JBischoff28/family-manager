@@ -1,7 +1,9 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { DateTime } from 'luxon'
 import { randomBytes } from 'crypto'
-import mail from '@adonisjs/mail/services/main'
+
+// Service Imports
+import EmailService from '#services/email_service'
 
 // Validator Imports
 import { passwordResetValidator, sendTokenValidator } from '#validators/password'
@@ -55,14 +57,7 @@ export default class PasswordsController {
         })
         
         if (resetToken) {
-          console.log("Sending Email")
-          await mail.send((message) => {
-            message
-              .to(user.email)
-              .from('jbischoffdev@gmail.com')
-              .subject('Reset Your Password - Family Manager')
-              .htmlView('emails/reset-password', { user, resetToken })
-          }).then(() => console.log('Email Sent'))
+          await EmailService.sendPasswordResetToken(user, resetToken)
           return inertia.render('confirmations/token-sent')
         }
       }

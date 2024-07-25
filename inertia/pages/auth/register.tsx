@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Head, router } from '@inertiajs/react'
 import { DateTime } from 'luxon'
-import AgeService from '#services/age-service'
+import AgeService from '#services/age_service'
 
 export default function Register(props: { errors: any[], step: number }) {
 

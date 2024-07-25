@@ -21,7 +21,6 @@ export default class SessionsController {
    */
   public async login({ request, auth, inertia }: HttpContext) {
     const data = request.all()
-    console.log(data)
     if (data.username) {
       const payload = await request.validateUsing(loginWithUsernameValidator)
       const { username, password } = payload

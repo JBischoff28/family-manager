@@ -1,12 +1,13 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { registrationValidator } from '#validators/registration'
-import mail from '@adonisjs/mail/services/main'
 
 // Model Imports
 import User from '#models/user'
 
 // Service Imports
 import AgeService from '#services/age_service'
+import EmailService from '#services/email_service'
+import UserService from '#services/user_service'
 
 export default class RegistrationsController {
 
@@ -40,14 +41,7 @@ export default class RegistrationsController {
       await user.fill(payload)
       await user.save()
       
-      console.log("Sending Email")
-      await mail.send((message) => {
-        message
-          .to(user.email)
-          .from('jbischoffdev@gmail.com')
-          .subject('Verify Your Email Address - Family Manager')
-          .htmlView('emails/verify-email', { user })
-      }).then(() => console.log('Email Sent'))
+      await EmailService.sendUserEmailVerification(user)
 
       return inertia.render('confirmations/verify-email')
     } catch (error) {
@@ -66,16 +60,14 @@ export default class RegistrationsController {
 
   async verifyEmail({ request, auth, inertia }: HttpContext) {
     const email = request.qs().email
-    const user = await User.findBy('email', email)
+    const user = await UserService.findUserByEmail(email)
 
     if (user) {
       if (user.isVerified == false) {        
-        user.isVerified = true
-        await user.save()
-        await auth.use('web').login(user)
+        await UserService.verifyEmailAddress(user)
+        await UserService.loginUser(user, auth)
         return inertia.render('confirmations/email-verified')
       } else {
-        console.log('Already Verified')
         return inertia.render('confirmations/email-verified')
       }
     } else {
