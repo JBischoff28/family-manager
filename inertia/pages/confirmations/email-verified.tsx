@@ -1,11 +1,13 @@
 import { Head } from "@inertiajs/react"
+import LinkButton from "~/components/LinkButton"
 
 export default function EmailVerified() {
     return (
         <div>
-            <Head title='Account Activation' />
-            <h1>You're account is now activated!</h1>
-            <p>Next let's complete your account set up.</p>
+            <Head title='Email Verified' />
+            <h1>You're email is now verified!</h1>
+            <p>Next, let's create your household.</p>
+            <LinkButton link="/household/create" buttonText="Let's Get Started!" />
         </div>
     )
 }

@@ -8,9 +8,11 @@
 */
 
 import router from '@adonisjs/core/services/router'
+import { middleware } from './kernel.js'
 const RegistrationsController = () => import('#controllers/registrations_controller')
 const SessionsController = () => import('#controllers/sessions_controller')
 const PasswordController = () => import('#controllers/passwords_controller')
+const HouseholdsController = () => import('#controllers/households_controller')
 
 router.on('/').redirect('/login')
 
@@ -31,6 +33,9 @@ router.group(() => {
   router.get('/verify-email', [RegistrationsController, 'verifyEmail']).as('verifyEmail')
 })
 
-// Account Creation Routes
+// Household Creation Routes
 router.group(() => {
+  router.get('/create', [HouseholdsController, 'showCreate']).as('showCreate')
 })
+  .prefix('/household')
+  .middleware(middleware.auth())

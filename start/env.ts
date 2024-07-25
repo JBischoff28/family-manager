@@ -40,6 +40,6 @@ export default await Env.create(new URL('../', import.meta.url), {
   | Variables for Stripe
   |----------------------------------------------------------
   */
-//  STRIPE_SECRET_KEY: Env.schema.string(),
-//  STRIPE_PUBLIC_KEY: Env.schema.string()
+ STRIPE_SECRET_KEY: Env.schema.string(),
+ STRIPE_PUBLIC_KEY: Env.schema.string()
 })
