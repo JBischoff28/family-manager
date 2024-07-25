@@ -16,3 +16,5 @@ export class StripeService {
         return customer
     }
 }
+
+export default new StripeService

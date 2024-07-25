@@ -7,7 +7,9 @@ import User from '#models/user'
 // Service Imports
 import AgeService from '#services/age_service'
 import EmailService from '#services/email_service'
+import AccountService from '#services/account_service'
 import UserService from '#services/user_service'
+import StripeService from '#services/stripe_service'
 
 export default class RegistrationsController {
 
@@ -63,6 +65,8 @@ export default class RegistrationsController {
 
     if (user) {
       if (user.isVerified == false) {        
+        const stripeCustomer = await StripeService.createCustomer(user)
+        stripeCustomer && await AccountService.createAccount(user, stripeCustomer.id)
         await UserService.verifyEmailAddress(user)
         await UserService.loginUser(user, auth)
         return inertia.render('confirmations/email-verified')

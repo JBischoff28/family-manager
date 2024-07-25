@@ -6,7 +6,7 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.integer('primary_account_holder_id').unsigned().references('id').inTable('users').onDelete('CASCADE').notNullable()
+      table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE').notNullable()
       table.integer('household_id').unsigned().references('id').inTable('households').onDelete('CASCADE').nullable()
       table.boolean('is_delinquent').defaultTo(false).notNullable()
       table.string('stripe_customer_id').notNullable()

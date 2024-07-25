@@ -5,9 +5,8 @@ import User from "#models/user";
 class AccountService {
 
    public async createAccount(user: User, stripeCustomerId: string) {
-      const account = new Account()
+      const account = await Account.create({ stripeCustomerId, userId: user.id })
       await account.related('primaryAccountHolder').associate(user)
-      account.stripeCustomerId = stripeCustomerId
       await account.save()
    }
 }

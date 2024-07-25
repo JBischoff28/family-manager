@@ -11,7 +11,7 @@ export default class Account extends BaseModel {
   declare id: number
 
   @column()
-  declare primaryAccountHolderId: number
+  declare userId: number
 
   @column()
   declare householdId?: number
