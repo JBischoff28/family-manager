@@ -2,9 +2,6 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { loginWithEmailValidator } from '#validators/login'
 import { loginWithUsernameValidator } from '#validators/login'
 
-// Model Imports
-import User from '#models/user'
-
 // Service Imports
 import UserService from '#services/user_service'
 
