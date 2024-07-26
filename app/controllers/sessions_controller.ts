@@ -1,7 +1,12 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import User from '#models/user'
 import { loginWithEmailValidator } from '#validators/login'
 import { loginWithUsernameValidator } from '#validators/login'
+
+// Model Imports
+import User from '#models/user'
+
+// Service Imports
+import UserService from '#services/user_service'
 
 export default class SessionsController {
   /**
@@ -25,8 +30,7 @@ export default class SessionsController {
       const payload = await request.validateUsing(loginWithUsernameValidator)
       const { username, password } = payload
       try {
-        const user = await User.verifyCredentials(username, password)
-        await auth.use('web').login(user)
+        await UserService.loginWithUsername(username, password, auth)
         console.log("Logged In with username")
       } catch (error) {
         return inertia.render('auth/login', { errors: [{ field: "credentials", rule: "incorrect", message: "Your username or password is incorrect. Please try again" }] })
@@ -35,8 +39,7 @@ export default class SessionsController {
       const payload = await request.validateUsing(loginWithEmailValidator)
       const { email, password } = payload
       try {
-        const user = await User.verifyCredentials(email, password)
-        await auth.use('web').login(user)
+        await UserService.loginWithEmail(email, password, auth)
         console.log("Logged In with email")
       } catch (error) {
         return inertia.render('auth/login', { errors: [{ field: "credentials", rule: "incorrect", message: "Your email or password is incorrect. Please try again" }] })

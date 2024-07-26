@@ -27,6 +27,16 @@ class UserService {
         user.isVerified = true
         await user.save()
     }
+
+    public async loginWithEmail(email: string, password: string, auth: Authenticator<Authenticators>) {
+        const user = await User.verifyCredentials(email, password)
+        await this.loginUser(user, auth)
+    }
+
+    public async loginWithUsername(username: string, password: string, auth: Authenticator<Authenticators>) {
+        const user = await User.verifyCredentials(username, password)
+        await this.loginUser(user, auth)
+    }
 }
 
 export default new UserService
