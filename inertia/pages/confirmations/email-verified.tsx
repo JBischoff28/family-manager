@@ -8,7 +8,7 @@ export default function EmailVerified() {
             <div>
                 <h1>You're email is now verified!</h1>
                 <p>Next, let's create your household.</p>
-                <LinkButton link="/household/create" buttonText="Let's Get Started!" />
+                <LinkButton link="/plans/choose" buttonText="Let's Get Started!" />
             </div>
         </>
     )
