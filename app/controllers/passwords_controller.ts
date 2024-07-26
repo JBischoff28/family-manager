@@ -1,12 +1,15 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { DateTime } from 'luxon'
-import { randomBytes } from 'crypto'
 
 // Service Imports
 import EmailService from '#services/email_service'
+import TokenService from '#services/token_service'
 
 // Validator Imports
 import { passwordResetValidator, sendTokenValidator } from '#validators/password'
+
+// Service Imports
+import UserService from '#services/user_service'
 
 // Model Imports
 import User from '#models/user'
@@ -31,35 +34,17 @@ export default class PasswordsController {
   async sendResetToken({ request, inertia }: HttpContext) {
     try {
       const payload = await request.validateUsing(sendTokenValidator)
-      const user = await User.findBy('email', payload.email)
+      const user = await UserService.findUserByEmail(payload.email)
 
       if (!user) {
         return inertia.render('auth/forgot-password', { errors: [{ message: "There is no user registered with this email address. Please try a different email address" }] })
       }
 
-      const token: any = await new Promise((resolve, reject) => {
-        randomBytes(24, (err, buffer) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(buffer.toString('hex'));
-          }
-        });
-      });
+      const token = await TokenService.generatePasswordResetToken(user)
 
-      const expiresAt = DateTime.local().plus({ hours: 1 })
-
-      if (!token.reason) {
-        const resetToken = await PasswordResetToken.create({
-          userId: user.id,
-          token: token,
-          expiresAt: expiresAt
-        })
-        
-        if (resetToken) {
-          await EmailService.sendPasswordResetToken(user, resetToken)
-          return inertia.render('confirmations/token-sent')
-        }
+      if (token) {
+        await EmailService.sendPasswordResetToken(user, token)
+        return inertia.render('confirmations/token-sent')
       }
     } catch (error) {
       return inertia.render('auth/forgot-password', { errors: error.messages })
@@ -85,7 +70,7 @@ export default class PasswordsController {
    * Resets the user's passwords and returns the user to the login page. 
    */
   async resetPassword({ request, inertia }: HttpContext) {
-    try {      
+    try {
       const payload = await request.validateUsing(passwordResetValidator)
       const passwordResetToken = await PasswordResetToken.findBy('token', payload.token)
 
