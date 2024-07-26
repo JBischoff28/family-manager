@@ -53,25 +53,27 @@ export default function ResetPassword(props: { token: string, errors: any }) {
     }, [props.errors])
 
     return (
-        <div>
+        <>
             <Head title="Password Reset" />
-            <p>Reset Your Password</p>
-            <form>
-                <input type='hidden' value={form.token} name='token' />
-                <div>
-                    <label htmlFor="password">Password</label>
-                    <input type="password" id="password" value={form.password} onChange={handleChange} />
-                    {missingFields.password != '' && <span>{missingFields.password}</span>}
-                    {errors[0] && errors[0].field == 'password' && errors[0].rule != 'confirm' ? <span>{errors[0].message}</span> : ""}
-                </div>
-                <div>
-                    <label htmlFor="passwordConfirmation">Confirm Password</label>
-                    <input type="password" id="passwordConfirmation" value={form.passwordConfirmation} onChange={handleChange} />
-                    {missingFields.passwordConfirmation != '' && <span>{missingFields.passwordConfirmation}</span>}
-                    {errors[0] && errors[0].field == 'password' && errors[0].rule == 'confirm' ? <span>{errors[0].message}</span> : ""}
-                </div>
-                <button disabled={submitting} onClick={(e) => handleSubmit(e)}>Reset</button>
-            </form>
-        </div>
+            <div>
+                <h1>Reset Your Password</h1>
+                <form>
+                    <input type='hidden' value={form.token} name='token' />
+                    <div>
+                        <label htmlFor="password">Password</label>
+                        <input type="password" id="password" value={form.password} onChange={handleChange} />
+                        {missingFields.password != '' && <span>{missingFields.password}</span>}
+                        {errors[0] && errors[0].field == 'password' && errors[0].rule != 'confirm' ? <span>{errors[0].message}</span> : ""}
+                    </div>
+                    <div>
+                        <label htmlFor="passwordConfirmation">Confirm Password</label>
+                        <input type="password" id="passwordConfirmation" value={form.passwordConfirmation} onChange={handleChange} />
+                        {missingFields.passwordConfirmation != '' && <span>{missingFields.passwordConfirmation}</span>}
+                        {errors[0] && errors[0].field == 'password' && errors[0].rule == 'confirm' ? <span>{errors[0].message}</span> : ""}
+                    </div>
+                    <button disabled={submitting} onClick={(e) => handleSubmit(e)}>Reset</button>
+                </form>
+            </div>
+        </>
     )
 }

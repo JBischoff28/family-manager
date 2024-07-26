@@ -144,73 +144,75 @@ export default function Register(props: { errors: any[], step: number }) {
   }, [props.errors])
 
   return (
-    <div>
+    <>
       <Head title='Register' />
-      <h1>Register</h1>
-      <form onSubmit={handleSubmit}>
-        {step == 1 &&
-          <div>
+      <div>
+        <h1>Register</h1>
+        <form onSubmit={handleSubmit}>
+          {step == 1 &&
             <div>
-              <label htmlFor="firstName">First Name</label>
-              <input type="text" id="firstName" value={form.firstName} onChange={handleChange} />
-              {missingFields.firstName != '' && <span>{missingFields.firstName}</span>}
-              {errors[0] && errors[0].field == 'firstName' ? <span>{errors[0].message}</span> : ""}
-            </div>
+              <div>
+                <label htmlFor="firstName">First Name</label>
+                <input type="text" id="firstName" value={form.firstName} onChange={handleChange} />
+                {missingFields.firstName != '' && <span>{missingFields.firstName}</span>}
+                {errors[0] && errors[0].field == 'firstName' ? <span>{errors[0].message}</span> : ""}
+              </div>
+              <div>
+                <label htmlFor="lastName">Last Name</label>
+                <input type="text" id="lastName" value={form.lastName} onChange={handleChange} />
+                {missingFields.lastName != '' && <span>{missingFields.lastName}</span>}
+                {errors[0] && errors[0].field == 'lastName' ? <span>{errors[0].message}</span> : ""}
+              </div>
+              <div>
+                <label htmlFor="dateOfBirth">Date of Birth</label>
+                <input type="date" id="dateOfBirth" value={form.dateOfBirth} onChange={handleChange} />
+                {missingFields.dateOfBirth != '' && <span>{missingFields.dateOfBirth}</span>}
+                {errors[0] && errors[0].field == 'dateOfBirth' ? <span>{errors[0].message}</span> : ""}
+              </div>
+              <div>
+                <button onClick={(e) => handleNextStep(e)}>Next</button>
+              </div>
+            </div>}
+          {step == 2 &&
             <div>
-              <label htmlFor="lastName">Last Name</label>
-              <input type="text" id="lastName" value={form.lastName} onChange={handleChange} />
-              {missingFields.lastName != '' && <span>{missingFields.lastName}</span>}
-              {errors[0] && errors[0].field == 'lastName' ? <span>{errors[0].message}</span> : ""}
-            </div>
+              <div>
+                <label htmlFor="email">Email</label>
+                <input type="email" id="email" value={form.email} onChange={handleChange} />
+                {missingFields.email != '' && <span>{missingFields.email}</span>}
+                {errors[0] && errors[0].field == 'email' ? <span>{errors[0].message}</span> : ""}
+              </div>
+              <div>
+                <label htmlFor="username">Username</label>
+                <input type="username" id="username" value={form.username} onChange={handleChange} />
+                {missingFields.username != '' && <span>{missingFields.username}</span>}
+                {errors[0] && errors[0].field == 'username' ? <span>{errors[0].message}</span> : ""}
+              </div>
+              <div>
+                <button onClick={(e) => handlePrevStep(e)}>Back</button>
+                <button onClick={(e) => handleNextStep(e)}>Next</button>
+              </div>
+            </div>}
+          {step == 3 &&
             <div>
-              <label htmlFor="dateOfBirth">Date of Birth</label>
-              <input type="date" id="dateOfBirth" value={form.dateOfBirth} onChange={handleChange} />
-              {missingFields.dateOfBirth != '' && <span>{missingFields.dateOfBirth}</span>}
-              {errors[0] && errors[0].field == 'dateOfBirth' ? <span>{errors[0].message}</span> : ""}
-            </div>
-            <div>
-              <button onClick={(e) => handleNextStep(e)}>Next</button>
-            </div>
-          </div>}
-        {step == 2 &&
-          <div>
-            <div>
-              <label htmlFor="email">Email</label>
-              <input type="email" id="email" value={form.email} onChange={handleChange} />
-              {missingFields.email != '' && <span>{missingFields.email}</span>}
-              {errors[0] && errors[0].field == 'email' ? <span>{errors[0].message}</span> : ""}
-            </div>
-            <div>
-              <label htmlFor="username">Username</label>
-              <input type="username" id="username" value={form.username} onChange={handleChange} />
-              {missingFields.username != '' && <span>{missingFields.username}</span>}
-              {errors[0] && errors[0].field == 'username' ? <span>{errors[0].message}</span> : ""}
-            </div>
-            <div>
-              <button onClick={(e) => handlePrevStep(e)}>Back</button>
-              <button onClick={(e) => handleNextStep(e)}>Next</button>
-            </div>
-          </div>}
-        {step == 3 &&
-          <div>
-            <div>
-              <label htmlFor="password">Password</label>
-              <input type="password" id="password" value={form.password} onChange={handleChange} />
-              {missingFields.password != '' && <span>{missingFields.password}</span>}
-              {errors[0] && errors[0].field == 'password' && errors[0].rule != 'confirm' ? <span>{errors[0].message}</span> : ""}
-            </div>
-            <div>
-              <label htmlFor="passwordConfirmation">Confirm Password</label>
-              <input type="password" id="passwordConfirmation" value={form.passwordConfirmation} onChange={handleChange} />
-              {missingFields.passwordConfirmation != '' && <span>{missingFields.passwordConfirmation}</span>}
-              {errors[0] && errors[0].field == 'password' && errors[0].rule == 'confirm' ? <span>{errors[0].message}</span> : ""}
-            </div>
-            <div>
-              <button onClick={(e) => handlePrevStep(e)}>Back</button>
-              <button disabled={submitting && !errors} type="submit">Register</button>
-            </div>
-          </div>}
-      </form>
-    </div>
+              <div>
+                <label htmlFor="password">Password</label>
+                <input type="password" id="password" value={form.password} onChange={handleChange} />
+                {missingFields.password != '' && <span>{missingFields.password}</span>}
+                {errors[0] && errors[0].field == 'password' && errors[0].rule != 'confirm' ? <span>{errors[0].message}</span> : ""}
+              </div>
+              <div>
+                <label htmlFor="passwordConfirmation">Confirm Password</label>
+                <input type="password" id="passwordConfirmation" value={form.passwordConfirmation} onChange={handleChange} />
+                {missingFields.passwordConfirmation != '' && <span>{missingFields.passwordConfirmation}</span>}
+                {errors[0] && errors[0].field == 'password' && errors[0].rule == 'confirm' ? <span>{errors[0].message}</span> : ""}
+              </div>
+              <div>
+                <button onClick={(e) => handlePrevStep(e)}>Back</button>
+                <button disabled={submitting && !errors} type="submit">Register</button>
+              </div>
+            </div>}
+        </form>
+      </div>
+    </>
   )
 }

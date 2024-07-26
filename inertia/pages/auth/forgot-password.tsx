@@ -45,21 +45,23 @@ export default function Login(props: { errors: any }) {
     }, [props.errors])
 
     return (
-        <div>
+        <>
             <Head title='Forgot Password' />
-            <h1>Password Reset</h1>
-            <form onSubmit={handleSubmit}>
-                <div>
+            <div>
+                <h1>Password Reset</h1>
+                <form onSubmit={handleSubmit}>
                     <div>
-                        <label htmlFor="email">Email</label>
-                        <input type="email" id="email" value={form.email} onChange={handleChange} />
-                        {missingFields.email != '' && <span>{missingFields.email}</span>}
-                        {errors[0] && errors[0].field == 'email' ? <span>{errors[0].message}</span> : ""}
-                        {errors[0] && errors[0].field != 'email' ? <span>{errors[0].message}</span> : ""}
+                        <div>
+                            <label htmlFor="email">Email</label>
+                            <input type="email" id="email" value={form.email} onChange={handleChange} />
+                            {missingFields.email != '' && <span>{missingFields.email}</span>}
+                            {errors[0] && errors[0].field == 'email' ? <span>{errors[0].message}</span> : ""}
+                            {errors[0] && errors[0].field != 'email' ? <span>{errors[0].message}</span> : ""}
+                        </div>
                     </div>
-                </div>
-                <button disabled={submitting} type="submit">Send Reset Token</button>
-            </form>
-        </div>
+                    <button disabled={submitting} type="submit">Send Reset Token</button>
+                </form>
+            </div>
+        </>
     )
 }
