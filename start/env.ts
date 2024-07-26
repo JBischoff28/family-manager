@@ -41,5 +41,8 @@ export default await Env.create(new URL('../', import.meta.url), {
   |----------------------------------------------------------
   */
  STRIPE_SECRET_KEY: Env.schema.string(),
- STRIPE_PUBLIC_KEY: Env.schema.string()
+ STRIPE_PUBLIC_KEY: Env.schema.string(),
+ STARTER_PLAN_ID: Env.schema.string(),
+ PLUS_PLAN_ID: Env.schema.string(),
+ PRO_PLAN_ID: Env.schema.string()
 })

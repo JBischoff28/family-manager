@@ -44,6 +44,7 @@ router.group(() => {
 // Plan(s) Routes
 router.group(() => {
   router.get('/choose', [AccountsController, 'chooseInitialPlan']).as('chooseInitialPlan')
+  router.post('/choose', [AccountsController, 'addPlan']).as('addInitialPlan')
 })
   .prefix('/plans')
   .middleware(middleware.auth())

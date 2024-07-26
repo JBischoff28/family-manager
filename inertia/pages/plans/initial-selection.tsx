@@ -1,6 +1,15 @@
-import { Head } from "@inertiajs/react"
+import { Head, router } from "@inertiajs/react"
+import { useState } from "react"
 
-export default function InitialPlanSelection() {
+export default function InitialPlanSelection(props: { starter: string, plus: string, pro: string }) {
+
+   const [selectedPlan, setSelectedPlan] = useState('')
+
+   const handleSubmit = (e: any) => {
+      e.preventDefault()
+      router.post('/plans/choose', { selectedPlan })
+   }
+
    return (
       <>
          <Head title="Select Your Plan" />
@@ -24,7 +33,7 @@ export default function InitialPlanSelection() {
                         <li>Basic notifications</li>
                      </ul>
                   </div>
-                  <button>Select</button>
+                  <button onClick={() => setSelectedPlan(props.starter)}>Select</button>
                </div>
                <div>
                   <h3>Family Plus</h3>
@@ -43,10 +52,10 @@ export default function InitialPlanSelection() {
                         <li>Invitation system for family members</li>
                      </ul>
                   </div>
-                  <button>Select</button>
+                  <button onClick={() => setSelectedPlan(props.plus)}>Select</button>
                </div>
                <div>
-                  <h3>Family Plus</h3>
+                  <h3>Family Pro</h3>
                   <p>Price - $9.99/month</p>
                   <p>Household Members - Unlimited</p>
                   <div>
@@ -66,9 +75,10 @@ export default function InitialPlanSelection() {
                         <li>Event notifications</li>
                      </ul>
                   </div>
-                  <button>Select</button>
+                  <button onClick={() => setSelectedPlan(props.pro)}>Select</button>
                </div>
             </div>
+            <button disabled={selectedPlan === ''} onClick={(e) => handleSubmit(e)}>Start My Plan!</button>
          </div>
       </>
    )

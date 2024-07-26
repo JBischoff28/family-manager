@@ -15,6 +15,11 @@ export class StripeService {
         })
         return customer
     }
+
+    public async getPlans() {
+        const plans = await stripe.products.list()
+        return plans
+    }
 }
 
 export default new StripeService
