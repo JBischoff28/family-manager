@@ -13,6 +13,7 @@ const RegistrationsController = () => import('#controllers/registrations_control
 const SessionsController = () => import('#controllers/sessions_controller')
 const PasswordController = () => import('#controllers/passwords_controller')
 const HouseholdsController = () => import('#controllers/households_controller')
+const AccountsController = () => import('#controllers/accounts_controller')
 
 router.on('/').redirect('/login')
 
@@ -38,4 +39,11 @@ router.group(() => {
   router.get('/create', [HouseholdsController, 'showCreate']).as('showCreate')
 })
   .prefix('/household')
+  .middleware(middleware.auth())
+
+// Plan(s) Routes
+router.group(() => {
+  router.get('/choose', [AccountsController, 'chooseInitialPlan']).as('chooseInitialPlan')
+})
+  .prefix('/plans')
   .middleware(middleware.auth())
